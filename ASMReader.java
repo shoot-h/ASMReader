@@ -176,7 +176,7 @@ public class ASMReader {
 
         public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
             System.out.printf("me\tvisitLocalVariable	%s	%s	%s	%s\t%s\t%d\n",
-                    name, desc, signature, start.toString(),end.toString(),index);
+                    name, desc, signature, "Start","End",index);
         }
 
         public void visitMaxs(int maxStack, int maxLocals) {
@@ -218,20 +218,23 @@ public class ASMReader {
 
         public void visitFrame(int type, int numLocal, java.lang.Object[] local, int numStack, java.lang.Object[] stack){
             System.out.printf("me\tvisitFrame	%d	%d", type, numLocal);
-
-            if(local != null) {
-                for (int i = 0; i < numLocal; i++) {
+            int i = 0;
+            try {
+                for (i = 0; i < local.length; i++) {
                     System.out.printf("\t%s",local[i].toString());
                 }
+            } catch (NullPointerException e){
+                System.out.printf("\tdone");
             }
-            else System.out.printf("\tnull");
+
             System.out.printf("\t%d",numStack);
-            if(stack != null) {
-                for (int i = 0; i < numStack; i++) {
+            try {
+                for (i = 0; i < stack.length; i++) {
                     System.out.printf("\t%s",stack[i].toString());
                 }
+            } catch (NullPointerException e){
+                System.out.printf("\tdone");
             }
-            else System.out.printf("\tnull");
             System.out.printf("\n");
         }
 
@@ -267,11 +270,11 @@ public class ASMReader {
         }
 
         public void visitJumpInsn(int opcode, Label label){
-            System.out.printf("me\tvisitJumpInsn	%d\t%s\n",opcode,label.toString());
+            System.out.printf("me\tvisitJumpInsn	%d\t%s\n",opcode,"Label");
         }
 
         public void visitLabel(Label label){
-            System.out.printf("me\tvisitLabel\t%s\n",label.toString());
+            System.out.printf("me\tvisitLabel\t%s\n","Label");
         }
 
         public void visitLdcInsn(java.lang.Object value){
@@ -279,7 +282,7 @@ public class ASMReader {
         }
 
         public void visitLineNumber(int line, Label start){
-            System.out.printf("me\tvisitLineNumber  %d  %s\n",line,start.toString());
+            System.out.printf("me\tvisitLineNumber  %d  %s\n",line,"Start");
         }
 
         public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end,
@@ -287,22 +290,22 @@ public class ASMReader {
             System.out.printf("me\tvisitLocalVariableAnnotation\t%d\t%s",typeRef,typePath.toString());
             if(start != null) {
                 for (int i = 0; i < start.length; i++) {
-                    System.out.printf("\t%s",start[i].toString());
+                    System.out.printf("\t%s","Start");
                 }
             }
-            else System.out.printf("\tnull");
+            System.out.printf("\tdone");
             if(end != null) {
                 for (int i = 0; i < end.length; i++) {
-                    System.out.printf("\t%s",end[i].toString());
+                    System.out.printf("\t%s","End");
                 }
             }
-            else System.out.printf("\tnull");
+            System.out.printf("\tdone");
             if(index != null) {
                 for (int i = 0; i < index.length; i++) {
                     System.out.printf("\t%s",index[i]);
                 }
             }
-            else System.out.printf("\tnull");
+            System.out.printf("\tnull");
             System.out.printf("\t%s\t%b\n",descriptor,visible);
 
             return new SimpleAnnotationVisitor();
@@ -318,7 +321,7 @@ public class ASMReader {
             else System.out.printf("\tnull");
             if(labels != null) {
                 for (int i = 0; i < labels.length; i++) {
-                    System.out.printf("\t%s",labels[i].toString());
+                    System.out.printf("\t%s","Label");
                 }
             }
             else System.out.printf("\tnull");
@@ -344,10 +347,10 @@ public class ASMReader {
         }
 
         public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels){
-            System.out.printf("me\tvisitTableSwitchInsn\t%d\t%d\t%s",min,max,dflt.toString());
+            System.out.printf("me\tvisitTableSwitchInsn\t%d\t%d\t%s",min,max,"Label");
             if(labels != null) {
                 for (int i = 0; i < labels.length; i++) {
-                    System.out.printf("\t%s",labels[i].toString());
+                    System.out.printf("\t%s","Label");
                 }
             }
             else System.out.printf("\tnull");
@@ -361,7 +364,7 @@ public class ASMReader {
         }
 
         public void visitTryCatchBlock(Label start, Label end, Label handler, java.lang.String type){
-            System.out.printf("me\tvisitTryCatchBlock\t%s\t%s\t%s\t%s\n",start.toString(),end.toString(),handler.toString(),type);
+            System.out.printf("me\tvisitTryCatchBlock\t%s\t%s\t%s\t%s\n","Start","End",handler.toString(),type);
         }
 
         public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, java.lang.String descriptor, boolean visible){
